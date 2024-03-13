@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class TrapPhobiaCarterS : ModuleRules
+public class VGP221TestGame : ModuleRules
 {
-	public TrapPhobiaCarterS(ReadOnlyTargetRules Target) : base(Target)
+	public VGP221TestGame(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	

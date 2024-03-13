@@ -3,13 +3,13 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class TrapPhobiaCarterSEditorTarget : TargetRules
+public class VGP221TestGameEditorTarget : TargetRules
 {
-	public TrapPhobiaCarterSEditorTarget( TargetInfo Target) : base(Target)
+	public VGP221TestGameEditorTarget( TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V4;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_3;
-		ExtraModuleNames.Add("TrapPhobiaCarterS");
+		ExtraModuleNames.Add("VGP221TestGame");
 	}
 }

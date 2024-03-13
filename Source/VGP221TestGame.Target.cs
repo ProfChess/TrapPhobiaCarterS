@@ -3,13 +3,13 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class TrapPhobiaCarterSTarget : TargetRules
+public class VGP221TestGameTarget : TargetRules
 {
-	public TrapPhobiaCarterSTarget(TargetInfo Target) : base(Target)
+	public VGP221TestGameTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V4;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_3;
-		ExtraModuleNames.Add("TrapPhobiaCarterS");
+		ExtraModuleNames.Add("VGP221TestGame");
 	}
 }
