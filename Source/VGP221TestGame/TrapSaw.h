@@ -4,17 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Components/BoxComponent.h"
-#include "TrapLaser.generated.h"
+#include "TrapSaw.generated.h"
 
 UCLASS()
-class VGP221TESTGAME_API ATrapLaser : public AActor
+class VGP221TESTGAME_API ATrapSaw : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ATrapLaser();
+	ATrapSaw();
 
 protected:
 	// Called when the game starts or when spawned
@@ -24,15 +23,12 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION()
-	void OnLaserHit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-private: 
+private:
 	UPROPERTY(VisibleAnywhere)
-	class UStaticMeshComponent* LaserMesh;
+	class UStaticMeshComponent* TrapSawMesh;
 
 	UPROPERTY(VisibleAnywhere)
-	class UBoxComponent* CollisionComponent;
+	class USceneComponent* RotationPivot;
 
 	FVector StartLocate;
 	FVector EndLocate;

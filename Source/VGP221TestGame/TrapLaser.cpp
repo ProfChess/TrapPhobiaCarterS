@@ -4,6 +4,7 @@
 #include "TrapLaser.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
+#include "PlayerCharacter.h"
 
 // Sets default values
 ATrapLaser::ATrapLaser()
@@ -18,10 +19,15 @@ ATrapLaser::ATrapLaser()
 	LaserMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LaserMesh"));
 	LaserMesh->SetupAttachment(RootComponent);
 
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> LaserMeshAsset(TEXT("C:/Users/carsm/OneDrive/Documents/Unreal Projects/VGP221TestGame/Content/Traps/SM_Laser.uasset"));
+	if (LaserMeshAsset.Succeeded())
+	{
+		LaserMesh->SetStaticMesh(LaserMeshAsset.Object);
+	}
 	//Collisison
 	CollisionComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionComponent"));
 	CollisionComponent->SetupAttachment(RootComponent);
-	CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ATrapLaser::OnOverlapBegin);
+	CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ATrapLaser::OnLaserHit);
 
 	//Default Values
 	speed = 2.0f;
@@ -34,11 +40,24 @@ void ATrapLaser::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	//Start Location
-	StartLocate = GetActorLocation();
+	if (LaserMesh && CollisionComponent) 
+	{
+		//Start Location
+		StartLocate = GetActorLocation();
 
-	//End Location
-	EndLocate = StartLocate + FVector(0.0f, 600.0f, 0.0f);
+		//End Location
+		EndLocate = StartLocate + FVector(0.0f, 600.0f, 0.0f);
+		speed = 2.0f;
+		bMovingForward = true;
+
+		CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+		CollisionComponent->SetCollisionObjectType(ECC_GameTraceChannel1);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Laser obstacle missing components"));
+	}
+	
 }
 
 // Called every frame
@@ -66,11 +85,16 @@ void ATrapLaser::Tick(float DeltaTime)
 
 }
 
-void ATrapLaser::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	// Handle overlap with player or other actors here
+void ATrapLaser::OnLaserHit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+
+{	
+	APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor);
+	if (PlayerCharacter)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, "Player Hit by Laser");
+	}
 }
+
 
 
 
