@@ -24,14 +24,16 @@ ATrapLaser::ATrapLaser()
 	{
 		LaserMesh->SetStaticMesh(LaserMeshAsset.Object);
 	}
+
 	//Collisison
 	CollisionComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionComponent"));
-	CollisionComponent->SetupAttachment(RootComponent);
+	CollisionComponent->SetupAttachment(LaserMesh);
 	CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ATrapLaser::OnLaserHit);
 
 	//Default Values
 	speed = 2.0f;
 	bMovingForward = true;
+	HitText = "Hit by Laser Trap";
 
 }
 
@@ -85,13 +87,18 @@ void ATrapLaser::Tick(float DeltaTime)
 
 }
 
-void ATrapLaser::OnLaserHit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-
+void ATrapLaser::OnLaserHit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, 
+	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {	
-	APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor);
-	if (PlayerCharacter)
+	if (OtherActor && OtherActor->IsA(APawn::StaticClass()))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, "Player Hit by Laser");
+		APawn* PlayerPawn = Cast<APawn>(OtherActor);
+		APlayerController* PlayerController = PlayerPawn ? Cast<APlayerController>(PlayerPawn->GetController()) : nullptr;
+		if (PlayerController)
+		{
+			//display text
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, HitText);
+		}
 	}
 }
 

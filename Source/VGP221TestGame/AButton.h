@@ -4,17 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
-#include "TrapLaser.generated.h"
+#include "AButton.generated.h"
 
 UCLASS()
-class VGP221TESTGAME_API ATrapLaser : public AActor
+class VGP221TESTGAME_API AAButton : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ATrapLaser();
+	AAButton();
 
 protected:
 	// Called when the game starts or when spawned
@@ -25,20 +26,18 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
-	void OnLaserHit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	void OnButtonPressed(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-private: 
+private:
 	UPROPERTY(VisibleAnywhere)
-	class UStaticMeshComponent* LaserMesh;
+	class UStaticMeshComponent* ButtonMesh;
 
 	UPROPERTY(VisibleAnywhere)
 	class UBoxComponent* CollisionComponent;
 
 	UPROPERTY(EditAnywhere, Category = "Gameplay")
-	FString HitText;
+	FString WinText;
 
-	FVector StartLocate;
-	FVector EndLocate;
-	float speed;
-	bool bMovingForward;
+
 };
